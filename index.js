@@ -39,6 +39,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     const database = client.db("Hope");
+    const database1 = client.db("HopeAdmin");
 
     const numberCollection = database.collection("number");
     const therapistCollection = database.collection("therapists");
@@ -47,6 +48,7 @@ async function run() {
     const faqCollection = database.collection("faqs");
     const faqQuestionCollection = database.collection("faqsQuestion");
     const bookReqCollection = database.collection("Requests for books");
+    const adminsCollection = database1.collection("Admins");
 
     app.post("/number", async (req, res) => {
       const number = req.body;
@@ -131,6 +133,19 @@ async function run() {
         zip,
         address,
         paymentId,
+      });
+      res.send(result);
+    });
+
+    app.post("/adminList", async (req, res) => {
+      const {
+        name,
+		email
+      } = req.body;
+
+      const result = await adminsCollection.insertOne({
+        name,
+		email
       });
       res.send(result);
     });
